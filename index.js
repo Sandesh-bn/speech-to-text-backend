@@ -52,9 +52,15 @@ app.post("/upload", upload.single("audio"), async (req, res) => {
     // Cleanup
     fs.unlinkSync(filePath);
 
+    let output = [];
+    for (let row of completed.utterances){
+      let {speaker, text} = row;
+      output.push({speaker, text})
+    }
+
     res.json({
       transcript: labeledTranscript,
-      raw: completed.utterances,
+      raw: output,
     });
   } catch (err) {
     console.error("Error:", err);
